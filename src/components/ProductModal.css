@@ -1,0 +1,428 @@
+/* ===========================
+   SAIPHER CG PALETTE (from logo)
+   =========================== */
+:root {
+  --sc-cream: #FBF3D5;
+  --sc-cream-soft: #F3E7BE;
+  --sc-cream-alt: #FFFCF0;
+  --sc-gold: #B48D16;
+  --sc-gold-dark: #8F700F;
+  --sc-yellow: #E1E61D;
+  --sc-yellow-dark: #C7CB18;
+  --sc-black: #17150E;
+  --sc-text: #221D0F;
+  --sc-text-soft: #6E6242;
+  --sc-text-faint: #8B7F5C;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.product-modal {
+  width: 90vw;
+  max-width: 500px;
+  min-width: 300px;
+  margin: auto;
+  border-radius: 16px;
+  padding: 1.5rem;
+  color: var(--sc-text);
+  background: var(--sc-cream);
+  border: 2px solid var(--sc-gold);
+  max-height: 90vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25), 0 0 40px rgba(180, 141, 22, 0.18);
+}
+
+.modal-scroll-content {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.25rem;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sc-gold) var(--sc-cream-soft);
+}
+
+.modal-scroll-content::-webkit-scrollbar { width: 8px; }
+.modal-scroll-content::-webkit-scrollbar-track {
+  background: var(--sc-cream-soft);
+  border-radius: 8px;
+}
+.modal-scroll-content::-webkit-scrollbar-thumb {
+  background: var(--sc-gold);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.modal-scroll-content::-webkit-scrollbar-thumb:hover {
+  background: var(--sc-yellow-dark);
+}
+
+.product-modal h2 {
+  text-align: left;
+  color: var(--sc-gold);
+  margin-bottom: 1rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+/* Carousel wrapper */
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Carousel container — enforces 1:1 square for images */
+.carousel-container {
+  position: relative;
+  background: var(--sc-cream-alt);
+  border: 1px solid rgba(180, 141, 22, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  aspect-ratio: 1 / 1;   /* ← enforces square on image slides */
+}
+
+/* Image fills the square container */
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  cursor: zoom-in;        /* ← hints the image is clickable to enlarge */
+  transition: opacity 0.15s ease;
+}
+
+.carousel-image:hover {
+  opacity: 0.9;
+}
+
+/* Video overrides the square — videos are 16:9 */
+.carousel-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  background: transparent;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+/* When the slide is a video, override the container to 16:9 */
+.carousel-container:has(.carousel-video) {
+  aspect-ratio: 16 / 9;
+}
+
+.carousel-prev,
+.carousel-next {
+  background: var(--sc-gold);
+  color: var(--sc-cream);
+  font-size: 1.5rem;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(180, 141, 22, 0.35);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+  background: var(--sc-yellow);
+  color: var(--sc-black);
+  box-shadow: 0 3px 12px rgba(225, 230, 29, 0.5);
+}
+
+.modal-body-scrollable {
+  flex-grow: 1;
+  padding-right: 4px;
+  margin-bottom: 1rem;
+}
+
+.size-section { margin-bottom: 1rem; }
+.size-label { color: var(--sc-gold); font-weight: bold; }
+.size-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.size-button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(180, 141, 22, 0.5);
+  background: var(--sc-cream-soft);
+  cursor: pointer;
+  color: var(--sc-text-soft);
+  transition: all 0.2s ease;
+  text-align: left;
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+.size-button:hover {
+  background: rgba(225, 230, 29, 0.25);
+  border-color: var(--sc-gold);
+  color: var(--sc-text);
+}
+
+.size-button.selected {
+  border: 2px solid var(--sc-gold);
+  background: var(--sc-gold);
+  color: var(--sc-cream);
+  box-shadow: 0 2px 10px rgba(180, 141, 22, 0.35);
+}
+
+.quantity-section { margin-bottom: 1rem; }
+.quantity-label { color: var(--sc-gold); font-weight: bold; }
+
+.quantity-input,
+.quantity-btn { box-sizing: border-box; height: 34px; }
+
+.quantity-input {
+  text-align: center;
+  width: 60px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(180, 141, 22, 0.5);
+  background-color: var(--sc-cream-alt);
+  color: var(--sc-text);
+  font-size: 1rem;
+  line-height: 1;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quantity-btn {
+  width: 34px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--sc-gold);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--sc-cream);
+  cursor: pointer;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(180, 141, 22, 0.35);
+  transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+  background-color: var(--sc-yellow);
+  color: var(--sc-black);
+  box-shadow: 0 3px 10px rgba(225, 230, 29, 0.5);
+}
+
+.quantity-note {
+  margin-top: 0.25rem;
+  color: var(--sc-text-faint);
+  font-size: 0.8rem;
+  font-style: italic;
+  align-self: center;
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+
+.description-box {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  background-color: var(--sc-cream-soft);
+  border: 1px solid rgba(180, 141, 22, 0.3);
+  color: var(--sc-text-soft);
+  border-radius: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.08);
+}
+
+.modal-footer {
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  background-color: #FBF3D5;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(180, 141, 22, 0.6);
+  z-index: 10;
+}
+
+.cancel-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(180, 141, 22, 0.6);
+  background-color: var(--sc-gold);
+  color: var(--sc-cream);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: rgba(225, 230, 29, 0.15);
+  border-color: var(--sc-yellow);
+  color: var(--sc-yellow);
+}
+
+.total-price {
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  color: black;
+  align-self: center;
+  margin: 0;
+}
+
+.add-button {
+  padding: 0.75rem 1.5rem;
+  background-color:var(--sc-gold);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  color: var(--sc-black);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(225, 230, 29, 0.3);
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.add-button:hover {
+  background-color: var(--sc-yellow-dark);
+  box-shadow: 0 6px 18px rgba(225, 230, 29, 0.45);
+}
+
+.add-button:active { transform: scale(0.98); }
+
+/* =====================
+   LIGHTBOX
+   ===================== */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;   /* above the modal (z-index: 1000) */
+  cursor: pointer; /* clicking outside image closes it */
+  padding: 1.5rem;
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  cursor: default;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: var(--sc-gold);
+  color: var(--sc-cream);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  z-index: 2001;
+}
+
+.lightbox-close:hover {
+  background: var(--sc-yellow);
+  color: var(--sc-black);
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 480px) {
+  .product-modal {
+    width: 85vw;
+    max-width: 360px;
+    padding: 0.75rem 1rem;
+    max-height: 85vh;
+    border-radius: 12px;
+  }
+
+  .description-box { font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+
+  .size-options {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .size-button { white-space: nowrap; }
+  .quantity-input { width: 55px; }
+
+  .modal-footer {
+    padding: 0.5rem 0.25rem;
+    flex-wrap: nowrap;
+  }
+
+  .cancel-button,
+  .add-button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .total-price { font-size: 0.9rem; margin: 0 0.4rem; }
+  .product-modal h2 { font-size: 1.1rem; }
+}

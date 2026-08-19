@@ -1,0 +1,111 @@
+.product-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.product-card {
+  position: relative;
+  width: 220px; /* slightly wider for better spacing */
+  padding: 1rem;
+  border: 1px solid oklch(0% 0 0); 
+  border-radius: 8px;
+  text-align: center;
+  background: rgb(255, 165, 0);  /* container color */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1; /* makes it a perfect square container */
+  object-fit: contain; /* ensures the entire image is shown without cropping */
+  border-radius: 6px;
+  background-color: rgb(6, 5, 3);
+  padding: 1.5px;
+  cursor: pointer;
+  
+  
+  
+  
+}
+
+.product-name {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  color: #000000;
+  text-Align: center;
+  margin-bottom: 10px;
+  text-align: left; /* or left */
+  white-space: normal;      /* 🔄 allow line breaks */
+  word-break: break-word;   /* 🔄 break long words */
+  line-height: 1;
+}
+
+.product-price {
+  font-weight: bold;
+  color: rgb(82, 68, 0);
+  margin-top: auto;
+ 
+}
+
+.product-button {
+  margin-top: 0.5rem;
+  background-color: rgb(166, 138, 0); /* muddy orange gradient */
+  color: rgb(215, 215, 215);
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(168, 112, 20, 0.4); /* warm muddy glow */
+  transition: all 0.3s ease;
+}
+
+.product-button:hover {
+  background: linear-gradient(135deg, rgb(226, 162, 35), rgb(226, 162, 35));
+  box-shadow: 0 6px 18px rgba(168, 112, 20, 0.6);
+  transform: translateY(-2px);
+}
+
+.product-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(168, 112, 20, 0.3);
+}
+
+
+/* mobile respoonsive */
+@media (max-width: 768px) {
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .product-card {
+    width: 90%; /* full width on mobile with margins */
+    margin: 0 auto;
+    padding: 1rem;  
+  }
+
+  .product-name {
+    font-size: 1rem;
+  }
+
+  .product-price {
+    font-size: 1rem;
+    margin-top: auto;
+  }
+
+  .product-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
