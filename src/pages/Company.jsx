@@ -176,14 +176,23 @@ function CompanyBlock({ block, addToCart, onOpenImage }) {
     if (!images.length) return null;
 
     const columns = Math.max(1, Math.min(Number(block.content?.columns || 3), 4));
+    const imageSize = Math.max(20, Math.min(Number(block.content?.imageSize || 100), 100));
 
     return (
       <section
         className="dynamic-company-gallery"
-        style={{ "--company-gallery-columns": columns }}
+        style={{
+          "--company-gallery-columns": columns,
+          "--company-img-size": `${imageSize}%`,
+        }}
       >
         {images.map((image) => (
-          <figure key={image.id || image.url}>
+          <figure
+            key={image.id || image.url}
+            className={`img-align-${
+              ["left", "center", "right"].includes(image.align) ? image.align : "center"
+            }`}
+          >
             <button type="button" onClick={() => onOpenImage(image)}>
               <img src={image.url} alt={image.alt || "Company"} />
             </button>
