@@ -102,7 +102,7 @@ Thank you.`)}`;
 
           <div>
             <FaPhoneAlt style={{ marginRight: "10px", color: "#ffa94d" }} />
-            0998 531 9773
+            +639199310187
             <div style={{ marginTop: "8px", fontSize: "0.95rem" }}>
               <FaMapMarkerAlt
                 style={{ marginRight: "8px", color: "#ffa94d" }}
