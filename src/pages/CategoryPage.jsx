@@ -24,8 +24,10 @@ import "./ProductGrid.css";
 // "unset" -- it shows "Starting at ₱0" because that's true information.
 function startingPrice(product) {
   if (product.hidePrice) return "";
-  if (!product.variants || product.variants.length === 0) return "";
-  const prices = product.variants.map((v) => v.price);
+  // With several variation sets the whole-ID combination rows hold the real totals.
+  const priced = product.combinations?.length ? product.combinations : product.variants;
+  if (!priced || priced.length === 0) return "";
+  const prices = priced.map((v) => Number(v.price));
   const allUnset = prices.every((p) => p === 0);
   if (allUnset) return "";
   const lowest = Math.min(...prices);

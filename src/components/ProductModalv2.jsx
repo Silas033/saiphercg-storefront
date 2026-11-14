@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-modal";
 import "./ProductModal.css";
+import { combineVariantIds } from "../data/variantGroups";
 
 Modal.setAppElement("#root");
 
@@ -37,9 +38,21 @@ function buildSlides(product) {
   return slides;
 }
 
+// Every variation set of a product (Size, Color, ...). Older data has just one set.
+function getVariantGroups(product) {
+  if (!product) return [];
+  if (product.variantGroups?.length) return product.variantGroups;
+  return [
+    {
+      no: 1,
+      label: product.variantLabel || "Select Variant",
+      variants: product.variants || [],
+    },
+  ];
+}
+
 function ProductModalv2({ isOpen, onRequestClose, product, addToCart }) {
-  const [sizeOptions, setSizeOptions] = useState([]);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]); // one option per set
   const [quantity, setQuantity] = useState(1);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState(null); // null = closed
@@ -48,9 +61,8 @@ function ProductModalv2({ isOpen, onRequestClose, product, addToCart }) {
   const slides = buildSlides(product);
 
   useEffect(() => {
-    if (product && product.variants) {
-      setSizeOptions(product.variants);
-      setSelectedSize(product.variants[0] || null);
+    if (product) {
+      setSelectedOptions(getVariantGroups(product).map((group) => group.variants[0] || null));
       setQuantity(1);
       setCurrentSlideIndex(0);
       setLightboxSrc(null);
@@ -69,20 +81,38 @@ function ProductModalv2({ isOpen, onRequestClose, product, addToCart }) {
   const handleNext = () =>
     setCurrentSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
 
+  const variantGroups = getVariantGroups(product);
+  const optionsReady =
+    variantGroups.length > 0 &&
+    selectedOptions.length === variantGroups.length &&
+    selectedOptions.every(Boolean);
+
+  // Price = the chosen option of every set added together.
   const calculateTotalPrice = () => {
-    if (!selectedSize) return 0;
-    return selectedSize.price * quantity;
+    if (!optionsReady) return 0;
+    return selectedOptions.reduce((sum, option) => sum + Number(option.price || 0), 0) * quantity;
   };
 
   const totalPrice = calculateTotalPrice();
 
+  // Whole ID: first set's ID + the other sets' IDs (same as saved by the dashboard)
+  const selectedVariantId = optionsReady
+    ? selectedOptions.length > 1
+      ? combineVariantIds(product.id, selectedOptions.map((option) => option.id))
+      : selectedOptions[0].id
+    : "";
+  const combinationMissing =
+    optionsReady &&
+    selectedOptions.length > 1 &&
+    !(product.combinations || []).some((combo) => combo.id === selectedVariantId);
+
   const handleAddToCart = () => {
-    if (!selectedSize) return;
+    if (!optionsReady || combinationMissing) return;
     addToCart({
       ...product,
       price: totalPrice,
-      selectedSize: selectedSize.label,
-      selectedVariantId: selectedSize.id,
+      selectedSize: selectedOptions.map((option) => option.label).join(" / "),
+      selectedVariantId,
       quantity,
       image: product.images?.[0] || "",
     });
@@ -150,25 +180,34 @@ function ProductModalv2({ isOpen, onRequestClose, product, addToCart }) {
           </div>
 
           <div className="modal-body-scrollable">
-            {/* Variant selector */}
-            <div className="size-section">
-              <div className="size-label">
-                {product.variantLabel || "Select Variant"} :
+            {/* Variant selectors - one block per variation set (Size, Color, ...) */}
+            {variantGroups.map((group, groupIndex) => (
+              <div className="size-section" key={group.no}>
+                <div className="size-label">{group.label || "Select Variant"} :</div>
+                <div className="size-options">
+                  {group.variants.map((option) => (
+                    <button
+                      key={option.id}
+                      onClick={() =>
+                        setSelectedOptions((current) => {
+                          const next = [...current];
+                          next[groupIndex] = option;
+                          return next;
+                        })
+                      }
+                      className={`size-button ${
+                        selectedOptions[groupIndex]?.id === option.id ? "selected" : ""
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="size-options">
-                {sizeOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => setSelectedSize(option)}
-                    className={`size-button ${
-                      selectedSize?.id === option.id ? "selected" : ""
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            ))}
+            {combinationMissing && (
+              <div className="quantity-note">This combination is not available right now.</div>
+            )}
 
             {/* Quantity */}
             <div className="quantity-section">
@@ -213,8 +252,13 @@ function ProductModalv2({ isOpen, onRequestClose, product, addToCart }) {
           <button className="cancel-button" onClick={onRequestClose}>
             Cancel
           </button>
-          <p className="total-price">Total: ₱{totalPrice.toFixed(2)}</p>
-          <button className="add-button" onClick={handleAddToCart}>
+          {/* "Hide Price" in the dashboard must also hide the total here */}
+          {product.hidePrice ? (
+            <p className="total-price" aria-hidden="true"></p>
+          ) : (
+            <p className="total-price">Total: ₱{totalPrice.toFixed(2)}</p>
+          )}
+          <button className="add-button" onClick={handleAddToCart} disabled={combinationMissing}>
             Add to Cart
           </button>
         </div>

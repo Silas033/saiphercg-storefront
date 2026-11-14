@@ -369,3 +369,17 @@ body.company-bg {
     padding: 18px;
   }
 }
+/* Gallery transparent PNG setting from dashboard: remove frame and square crop. */
+.dynamic-company-gallery figure.img-transparent button {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+.dynamic-company-gallery figure.img-transparent img {
+  aspect-ratio: auto;
+  object-fit: contain;
+  height: auto;
+}
+/* Retain chosen 10%-100% image sizing without a minimum-width clamp. */
+.dynamic-company-gallery button { box-sizing: border-box; }

@@ -51,7 +51,7 @@ function CustomerInfoForm() {
   const changeField = (field) => (event) => {
     setFormData((current) => ({
       ...current,
-      [field]: event.target.value,
+      [field]: field === "contact" ? event.target.value.replace(/\D/g, "").slice(0, 15) : event.target.value,
     }));
 
     setErrors((current) => ({
@@ -113,6 +113,8 @@ function CustomerInfoForm() {
 
     if (!formData.contact.trim()) {
       next.contact = "Contact number is required.";
+    } else if (!/^\d{5,15}$/.test(formData.contact)) {
+      next.contact = "Enter a valid contact number (5–15 digits).";
     }
 
     if (!formData.address.trim()) {
@@ -223,8 +225,9 @@ function CustomerInfoForm() {
       setStatus({
         type: "error",
         message:
-          error?.message ||
-          "Unable to submit your order.",
+          /failed to fetch|networkerror|network request failed|load failed/i.test(error?.message || "")
+            ? "We couldn't connect to the order service. Check your internet connection and try again. Your cart is still saved."
+            : (error?.message || "Unable to submit your order. Please try again."),
       });
 
       recaptchaRef.current?.reset();
@@ -277,11 +280,13 @@ function CustomerInfoForm() {
                 id="customer-contact"
                 label="Contact Number"
                 icon={<FaPhoneAlt />}
-                type="tel"
+                type="text"
+                inputMode="numeric"
+                maxLength={15}
                 value={formData.contact}
                 onChange={changeField("contact")}
                 placeholder=""
-                autoComplete="tel"
+                autoComplete="off"
                 error={errors.contact}
               />
             </div>

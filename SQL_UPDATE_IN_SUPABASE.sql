@@ -1,0 +1,4 @@
+-- Apply the companion dashboard script:
+-- DashBoard_Launch_Secured/sql/APPLY_THIS_SAIPHER_UPDATE.sql
+-- Both projects point to the same Supabase project: xkhhuxsmdqbnrwpnajlg.
+-- Run the dashboard SQL once. This storefront does not need separate SQL.

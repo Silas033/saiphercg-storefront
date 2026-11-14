@@ -176,7 +176,7 @@ function CompanyBlock({ block, addToCart, onOpenImage }) {
     if (!images.length) return null;
 
     const columns = Math.max(1, Math.min(Number(block.content?.columns || 3), 4));
-    const imageSize = Math.max(20, Math.min(Number(block.content?.imageSize || 100), 100));
+    const imageSize = Math.max(10, Math.min(Number(block.content?.imageSize ?? 100), 100));
 
     return (
       <section
@@ -189,7 +189,7 @@ function CompanyBlock({ block, addToCart, onOpenImage }) {
         {images.map((image) => (
           <figure
             key={image.id || image.url}
-            className={`img-align-${
+            className={`${image.transparent ? "img-transparent " : ""}img-align-${
               ["left", "center", "right"].includes(image.align) ? image.align : "center"
             }`}
           >

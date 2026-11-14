@@ -675,3 +675,8 @@ body.contact-bg {
     padding: 21px 18px;
   }
 }
+@media (max-width: 600px) {
+  .customer-info-page, .customer-info-card { width: 100%; max-width: 100%; box-sizing: border-box; }
+  .customer-form-row { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .customer-field, .input-shell { min-width: 0; }
+}

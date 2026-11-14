@@ -53,3 +53,14 @@ input:focus {
   outline: none;
   border-color: #646cff;
 }
+
+/* Mobile viewport guards */
+@media (max-width: 768px) {
+  html, body, #root { width: 100%; max-width: 100%; }
+  img, video, iframe { max-width: 100%; }
+  .container, .container-fluid { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .row { margin-left: 0; margin-right: 0; }
+  input, select, textarea { max-width: 100%; min-width: 0; }
+}
